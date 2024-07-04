@@ -2,7 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-exports.createEvent = async (req, res) => {
+// Create event
+const createEvent = async (req, res) => {
   const { title, description, date, location, imageUrl } = req.body;
   try {
     const event = await prisma.event.create({
@@ -21,7 +22,10 @@ exports.createEvent = async (req, res) => {
   }
 };
 
-exports.getEvents = async (req, res) => {
+// Get events
+const getEvents = async (req, res) => {
   const events = await prisma.event.findMany();
   res.json(events);
 };
+
+module.exports = { createEvent, getEvents };

@@ -1,6 +1,6 @@
 const express = require('express');
 const { createEvent, getEvents } = require('../controllers/eventController');
-const authenticateToken = require('../helpers/authenticateToken');
+const {authenticateToken} = require('../helpers/authenticateToken');
 
 const router = express.Router();
 
