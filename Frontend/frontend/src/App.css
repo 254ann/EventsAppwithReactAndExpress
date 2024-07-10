@@ -2,16 +2,20 @@ body{
   background-color: blueviolet;
 }
 
-nav{
+.navbar {
   display: flex;
-  flex-direction: row;
-  column-gap: 200px;
   background-color: aqua;
   box-sizing: border-box;
   width: 2000px;
   height: 80px;
   font-size: larger;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 100px;
 }
+
 
 input{
   background-color: rgb(196, 218, 255);

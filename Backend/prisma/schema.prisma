@@ -4,45 +4,39 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-// Datasource configuration for connecting to the MySQL database
-datasource db {
-  provider = "mysql"        // Database provider
-  url      = env("DATABASE_URL")  // Connection URL stored in the .env file
-}
-
-// Generator configuration for generating Prisma Client
 generator client {
-  provider = "prisma-client-js"  // Specifies the Prisma Client generator
+  provider = "prisma-client-js"
 }
 
-// User model definition
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
-  id       Int      @id @default(autoincrement())  // Primary key with auto-increment
-  username String   @unique                        // Unique username field
-  password String                                // Password field
-  email    String   @unique                        // Unique email field
-  events   Event[]                                // One-to-many relationship with events (a user can have multiple events)
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  email    String   @unique
+  events   Event[]
 }
 
-// Event model definition
 model Event {
-  id          Int      @id @default(autoincrement())  // Primary key with auto-increment
-  title       String  
-  imageUrl    String?                               // Event title
-  description String                                // Event description
-  date        DateTime                              // Event date and time
-  location    String                                // Event location
-  organizerId Int                                   // Foreign key referencing the user (organizer)
-  organizer   User     @relation(fields: [organizerId], references: [id])  // Relation to the User model
-  tickets     Ticket[]                              // One-to-many relationship with tickets (an event can have multiple tickets)
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  organizerId Int
+  organizer   User     @relation(fields: [organizerId], references: [id])
+  tickets     Ticket[]
 }
 
-// Ticket model definition
 model Ticket {
-  id      Int    @id @default(autoincrement())  // Primary key with auto-increment
-  eventId Int                                // Foreign key referencing the event
-  type    String                             // Ticket type (e.g., General Admission, VIP)
-  price   Float                              // Ticket price
-  quantity Int                               // Quantity of tickets available
-  event   Event  @relation(fields: [eventId], references: [id])  // Relation to the Event model
+  id      Int    @id @default(autoincrement())
+  eventId Int
+  type    String
+  price   Float
+  quantity Int
+  event   Event  @relation(fields: [eventId], references: [id])
 }
