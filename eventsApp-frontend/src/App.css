@@ -1,0 +1,31 @@
+body{
+  background-color: blueviolet;
+}
+
+nav{
+  display: flex;
+  flex-direction: row;
+  column-gap: 200px;
+  background-color: aqua;
+  box-sizing: border-box;
+  width: 2000px;
+  height: 80px;
+  font-size: larger;
+}
+
+input{
+  background-color: rgb(196, 218, 255);
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin-top: 25px;
+}
+
+
+
+
+
+
+[
+
