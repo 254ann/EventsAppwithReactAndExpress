@@ -1,3 +1,4 @@
+// Frontend/frontend/src/context/AuthContext.jsx
 import { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -15,19 +16,8 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const token = localStorage.getItem('token');
-        console.log('Token from localStorage:', token); // Log token
-        if (token) {
-          const config = {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          };
-          const res = await axios.get('http://localhost:3000/api/auth/check-auth', config);
-          setUser(res.data.user || null);
-        } else {
-          console.error('No token found');
-        }
+        const res = await axios.get('http://localhost:3000/api/auth/check-auth', { withCredentials: true });
+        setUser(res.data.user || null);
       } catch (err) {
         console.error(err);
       } finally {
@@ -38,12 +28,10 @@ const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (username, password) => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      console.log('Token stored in localStorage:', res.data.token); // Log token
+      const res = await axios.post('http://localhost:3000/api/auth/login', { username, password }, { withCredentials: true });
       setUser(res.data.user);
       navigate('/');
     } catch (err) {
@@ -57,11 +45,9 @@ const AuthProvider = ({ children }) => {
   const register = async (username, email, password) => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/register', { username, email, password });
-      localStorage.setItem('token', res.data.token);
-      console.log('Token stored in localStorage:', res.data.token); // Log token
-      setUser(res.data.user);
-      navigate('/');
+      const res = await axios.post('http://localhost:3000/api/auth/register', { username, email, password }, { withCredentials: true });
+      setUser(null); // Set user to null after registration
+      navigate('/login');
     } catch (err) {
       console.error(err);
       setError('Registration failed. Please try again.');
@@ -73,8 +59,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:3000/api/auth/logout');
-      localStorage.removeItem('token');
+      await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
       setUser(null);
       navigate('/login');
     } catch (err) {
